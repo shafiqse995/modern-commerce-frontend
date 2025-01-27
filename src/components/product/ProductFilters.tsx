@@ -8,6 +8,7 @@ import {
 import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Slider } from '~/components/ui/slider';
+import { SearchBar } from '../Search';
 
 interface FilterProps {
   onFilterChange: (filters: object) => void;
@@ -20,6 +21,7 @@ export function ProductFilters({ onFilterChange }: FilterProps) {
 
   return (
     <div className="fixed bottom-0 left-0 top-20 w-72 overflow-y-auto bg-white p-4 sm:left-6 sm:w-80">
+      <SearchBar className="mx-0 mb-10 flex w-full md:hidden" />
       <h2 className="mb-4 font-semibold">Filters</h2>
       <Accordion type="single" collapsible className="w-full">
         <AccordionItem value="price">

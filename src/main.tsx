@@ -4,6 +4,7 @@ import { RouterProvider, createRouter } from '@tanstack/react-router';
 import type { AxiosError } from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ZodError } from 'zod';
 import './index.css';
 
 import { routeTree } from './routeTree.gen';
@@ -19,7 +20,7 @@ declare module '@tanstack/react-router' {
 
 declare module '@tanstack/react-query' {
   interface Register {
-    defaultError: AxiosError;
+    defaultError: AxiosError | ZodError;
   }
 }
 

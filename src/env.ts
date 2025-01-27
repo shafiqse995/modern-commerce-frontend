@@ -6,6 +6,7 @@ export const env = z.object({
 
   // client
   VITE_APP_TITLE: z.string().min(1),
+  VITE_API_URL: z.string().url(),
 });
 
 type Environment = Readonly<z.infer<typeof env>>;

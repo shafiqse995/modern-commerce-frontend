@@ -11,7 +11,7 @@ function RootRoute() {
       <SidebarProvider>
         <div>
           <Navbar />
-          <div className="m-0 mt-12 h-screen w-screen  px-8">
+          <div className="m-0 mt-12 h-screen w-screen px-8">
             <Outlet />
           </div>
         </div>
