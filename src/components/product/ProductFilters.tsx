@@ -1,3 +1,4 @@
+import { useQueryState } from 'nuqs';
 import { useState } from 'react';
 import {
   Accordion,
@@ -8,16 +9,22 @@ import {
 import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Slider } from '~/components/ui/slider';
+import { ProductCategory } from '~/hooks/use-products';
 import { SearchBar } from '../Search';
 
-interface FilterProps {
-  onFilterChange: (filters: object) => void;
-}
-
-export function ProductFilters({ onFilterChange }: FilterProps) {
+export function ProductFilters({ categories }: { categories: Array<ProductCategory> }) {
   const [priceRange, setPriceRange] = useState([0, 1000]);
-  const categories = ['Electronics', 'Clothing', 'Books', 'Home & Garden', 'Sports', 'Toys'];
-  const brands = ['Apple', 'Samsung', 'Nike', 'Adidas', 'Sony', 'LG', 'Dell', 'HP'];
+  const [localCategory, setLocalCategory] = useState<number[]>([]);
+  const [, setMinPrice] = useQueryState('min_price', { defaultValue: '' });
+  const [, setMaxPrice] = useQueryState('max_price', { defaultValue: '' });
+  const [, setCategory] = useQueryState('category', { defaultValue: '' });
+  const handleCheckboxChange = (category: number) => {
+    setLocalCategory((prevCategories) =>
+      prevCategories.includes(category)
+        ? prevCategories.filter((item) => item !== category)
+        : [...prevCategories, category],
+    );
+  };
 
   return (
     <div className="fixed bottom-0 left-0 top-20 w-72 overflow-y-auto bg-white p-4 sm:left-6 sm:w-80">
@@ -47,32 +54,18 @@ export function ProductFilters({ onFilterChange }: FilterProps) {
           <AccordionTrigger>Categories</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
-              {categories.map((category) => (
-                <div key={category} className="flex items-center space-x-2">
-                  <Checkbox id={category} />
+              {categories.map((category: ProductCategory) => (
+                <div key={category.id} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={category.title}
+                    checked={localCategory.includes(category.id)}
+                    onCheckedChange={() => handleCheckboxChange(category.id)}
+                  />
                   <label
-                    htmlFor={category}
+                    htmlFor={category.title}
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
-                    {category}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="brands">
-          <AccordionTrigger>Brands</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {brands.map((brand) => (
-                <div key={brand} className="flex items-center space-x-2">
-                  <Checkbox id={brand} />
-                  <label
-                    htmlFor={brand}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    {brand}
+                    {category.title}
                   </label>
                 </div>
               ))}
@@ -80,7 +73,15 @@ export function ProductFilters({ onFilterChange }: FilterProps) {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-      <Button className="mt-6 w-full" onClick={() => onFilterChange({ priceRange })}>
+      <Button
+        className="mt-6 w-full"
+        onClick={() => {
+          setMinPrice(priceRange[0].toString());
+          setMaxPrice(priceRange[1].toString());
+          const categories = localCategory.join(',');
+          setCategory(categories);
+        }}
+      >
         Apply Filters
       </Button>
     </div>

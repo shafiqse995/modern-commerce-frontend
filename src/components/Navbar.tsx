@@ -16,6 +16,7 @@ import { SearchBar } from './Search';
 
 const Navbar = () => {
   const navigate = useNavigate();
+
   return (
     <nav className="fixed z-10 w-full bg-white shadow-sm">
       <div className="mx-auto flex justify-end px-4 md:block">

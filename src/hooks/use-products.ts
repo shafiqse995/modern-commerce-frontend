@@ -29,17 +29,30 @@ const ResponseSchema = z.object({
   results: z.array(Product),
 });
 
-const fetchAllProducts = async () => {
-  const response = await http.get('/products');
+const fetchAllProducts = async (queryParameter: QueryParams) => {
+  const { search = '', min_price = '', max_price = '', category = '' } = queryParameter;
+  const response = await http.get(
+    `/products?search=${search}&min_price=${min_price}&max_price=${max_price}&category=${category}`,
+  );
   const parsedResponse = await ResponseSchema.parseAsync(response.data);
   return parsedResponse;
 };
 
-export function useProducts() {
+const QueryParams = z.object({
+  search: z.string().optional(),
+  min_price: z.number().optional(),
+  max_price: z.number().optional(),
+  category: z.string().optional(),
+});
+
+export type QueryParams = z.infer<typeof QueryParams>;
+
+export function useProducts(queryParameter: QueryParams) {
   return useQuery({
-    queryKey: ['products'],
-    queryFn: fetchAllProducts,
+    queryKey: ['products', queryParameter],
+    queryFn: () => fetchAllProducts(queryParameter),
     select: ({ results }) => results,
+    staleTime: Infinity,
     refetchOnMount: false,
   });
 }
