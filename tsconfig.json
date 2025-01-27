@@ -30,5 +30,6 @@
     }
   },
   "include": ["src"],
+  "exclude": ["src/env.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
