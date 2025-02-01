@@ -1,25 +1,26 @@
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/products/')({
-  loader: () => fetchCategories(),
   component: ProductsPage,
 });
 
 import { SlidersHorizontal } from 'lucide-react';
+import { Suspense } from 'react';
 import { ProductFilters } from '~/components/product/ProductFilters';
 import { ProductGrid } from '~/components/product/ProductGrid';
+import { ProductsPagination } from '~/components/product/ProductsPagination';
 import { Button } from '~/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet';
-import { fetchCategories } from '~/hooks/use-categories';
 
 export function ProductsPage() {
-  const categories = Route.useLoaderData();
   return (
     <div className="mx-auto px-4 py-8">
       <div className="flex flex-col space-y-6">
         <div className="flex gap-6">
           <aside className="hidden w-[300px] flex-shrink-0 overflow-y-auto lg:block">
-            <ProductFilters categories={categories} />
+            <Suspense fallback={<p>loading...</p>}>
+              <ProductFilters />
+            </Suspense>
           </aside>
           <div className="flex flex-col gap-10">
             <h1 className="size-5 text-3xl font-medium">Products</h1>
@@ -31,10 +32,13 @@ export function ProductsPage() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                <ProductFilters categories={categories} />
+                <Suspense fallback={<p>Loading...</p>}>
+                  <ProductFilters />
+                </Suspense>
               </SheetContent>
             </Sheet>
             <main className="bg flex-1">
+              <ProductsPagination />
               <ProductGrid />
             </main>
           </div>

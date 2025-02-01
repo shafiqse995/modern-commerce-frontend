@@ -12,10 +12,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
+import { cartStore } from '~/store/cart-store';
 import { SearchBar } from './Search';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { totalProducts } = cartStore();
 
   return (
     <nav className="fixed z-10 w-full bg-white shadow-sm">
@@ -34,9 +36,11 @@ const Navbar = () => {
               }}
             >
               <ShoppingCart className="h-5 w-5" />
-              <Badge className="absolute -right-1 -top-1" variant="destructive">
-                3
-              </Badge>
+              {totalProducts > 0 && (
+                <Badge className="absolute -right-1 -top-1" variant="destructive">
+                  {totalProducts}
+                </Badge>
+              )}
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

@@ -47,7 +47,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <p className="line-clamp-2 text-sm text-muted-foreground">{product.description}</p>
       </CardContent>
       <CardFooter className="flex items-center justify-between p-4 pt-0">
-        <span className="text-lg font-bold">${product.price.toFixed(2)}</span>
+        <span className="text-lg font-bold">€{product.price.toFixed(2)}</span>
       </CardFooter>
     </Card>
   );

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { z } from 'zod';
 import { http } from '~/lib/http';
+import { wait } from '~/lib/utils';
 
 export const ProductCategory = z.object({
   id: z.number(),
@@ -24,33 +25,33 @@ export type Product = z.infer<typeof Product>;
 
 const ResponseSchema = z.object({
   count: z.number(),
-  next: z.string().nullable(),
-  previous: z.string().nullable(),
   results: z.array(Product),
+  has_next: z.boolean(),
+  next: z.number().nullable(),
+  has_previous: z.boolean(),
+  previous: z.number().nullable(),
 });
 
-const fetchAllProducts = async (queryParameter: QueryParams) => {
-  const { search = '', min_price = '', max_price = '', category = '' } = queryParameter;
-  const response = await http.get(
-    `/products?search=${search}&min_price=${min_price}&max_price=${max_price}&category=${category}`,
-  );
+export const fetchAllProducts = async (page: number, query: Record<string, string> = {}) => {
+  const searchParams = new URLSearchParams(query);
+
+  if (searchParams.has('page')) {
+    searchParams.delete('page');
+  }
+  searchParams.append('page', String(page));
+
+  const response = await http.get(`/products?${searchParams}`);
   const parsedResponse = await ResponseSchema.parseAsync(response.data);
   return parsedResponse;
 };
 
-const QueryParams = z.object({
-  search: z.string().optional(),
-  min_price: z.number().optional(),
-  max_price: z.number().optional(),
-  category: z.string().optional(),
-});
-
-export type QueryParams = z.infer<typeof QueryParams>;
-
-export function useProducts(queryParameter: QueryParams) {
+export function useProducts(page = 1, search: Record<string, string> = {}) {
   return useQuery({
-    queryKey: ['products', queryParameter],
-    queryFn: () => fetchAllProducts(queryParameter),
+    queryKey: ['products', page, search],
+    queryFn: async () => {
+      const [response] = await Promise.all([fetchAllProducts(page, search), wait(1000)]);
+      return response;
+    },
     select: ({ results }) => results,
     staleTime: Infinity,
     refetchOnMount: false,

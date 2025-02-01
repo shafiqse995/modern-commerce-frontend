@@ -5,6 +5,8 @@ import { useState } from 'react';
 import ProductLoadingSkeleton from '~/components/ProductLoadingSkeleton';
 import { Button } from '~/components/ui/button';
 import { fetchProduct } from '~/hooks/use-product';
+import { useToast } from '~/hooks/use-toast';
+import { cartStore } from '~/store/cart-store';
 
 export const Route = createFileRoute('/products/$productId')({
   component: ProductDetail,
@@ -19,7 +21,9 @@ export const Route = createFileRoute('/products/$productId')({
 
 export default function ProductDetail() {
   const product = Route.useLoaderData();
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const { addProducts } = cartStore();
+  const { toast } = useToast();
 
   return (
     <div className="mx-auto flex w-full flex-col gap-10 py-8 xl:w-[60%]">
@@ -27,14 +31,14 @@ export default function ProductDetail() {
         <img
           src={product.image}
           alt={product.title}
-          className="size-[350px] rounded-lg md:h-[350px] md:w-[713px] lg:size-[470px] xl:size-[400px]"
+          className="size-[350px] w-full rounded-lg md:h-[350px] md:w-[713px] lg:size-[470px] xl:size-[400px]"
         />
 
         {/* Product Information */}
         <div className="flex flex-col items-center gap-4 sm:items-start">
           <h1 className="text-3xl font-bold">{product?.title}</h1>
           <div className="flex items-center gap-2">
-            <span className="text-2xl font-semibold">${product?.price}</span>
+            <span className="text-2xl font-semibold">€{product?.price.toFixed(2)}</span>
           </div>
 
           {/* Quantity Selection */}
@@ -43,6 +47,7 @@ export default function ProductDetail() {
               variant="outline"
               size="icon"
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              disabled={quantity === 1}
             >
               <Minus className="h-4 w-4" />
             </Button>
@@ -53,7 +58,13 @@ export default function ProductDetail() {
           </div>
 
           {/* Add to Cart Button */}
-          <Button className="mt-4 w-full">
+          <Button
+            className="mt-4 w-full"
+            onClick={() => {
+              addProducts(product, quantity);
+              toast({ title: `${product.title} Added`, variant: 'default' });
+            }}
+          >
             <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
           </Button>
         </div>

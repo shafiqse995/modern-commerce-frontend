@@ -9,15 +9,35 @@ import {
 import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Slider } from '~/components/ui/slider';
-import { ProductCategory } from '~/hooks/use-products';
+import { useCategories } from '~/hooks/use-categories';
 import { SearchBar } from '../Search';
 
-export function ProductFilters({ categories }: { categories: Array<ProductCategory> }) {
-  const [priceRange, setPriceRange] = useState([0, 1000]);
-  const [localCategory, setLocalCategory] = useState<number[]>([]);
+export function ProductFilters() {
+  const { data: categories = [] } = useCategories();
+  const [priceRange, setPriceRange] = useState(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const min = Number(searchParams.get('min_price') ?? 0);
+    const max = Number(searchParams.get('max_price') ?? 1000);
+
+    const correctedMin = Number.isNaN(min) ? 0 : min;
+    const correctedMax = Number.isNaN(max) ? 1000 : max;
+
+    return [correctedMin, correctedMax];
+  });
+
+  const [localCategory, setLocalCategory] = useState<number[]>(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const category = searchParams.get('category') ?? '';
+    return category
+      .split(',')
+      .map(Number)
+      .filter((n) => !Number.isNaN(n) && n > 0);
+  });
   const [, setMinPrice] = useQueryState('min_price', { defaultValue: '' });
   const [, setMaxPrice] = useQueryState('max_price', { defaultValue: '' });
-  const [, setCategory] = useQueryState('category', { defaultValue: '' });
+  const [, setSelectedCategories] = useQueryState('category', { defaultValue: '' });
+
   const handleCheckboxChange = (category: number) => {
     setLocalCategory((prevCategories) =>
       prevCategories.includes(category)
@@ -54,7 +74,7 @@ export function ProductFilters({ categories }: { categories: Array<ProductCatego
           <AccordionTrigger>Categories</AccordionTrigger>
           <AccordionContent>
             <div className="space-y-2">
-              {categories.map((category: ProductCategory) => (
+              {categories.map((category) => (
                 <div key={category.id} className="flex items-center space-x-2">
                   <Checkbox
                     id={category.title}
@@ -79,7 +99,7 @@ export function ProductFilters({ categories }: { categories: Array<ProductCatego
           setMinPrice(priceRange[0].toString());
           setMaxPrice(priceRange[1].toString());
           const categories = localCategory.join(',');
-          setCategory(categories);
+          setSelectedCategories(categories);
         }}
       >
         Apply Filters
