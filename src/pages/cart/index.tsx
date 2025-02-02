@@ -31,9 +31,7 @@ function CartPage() {
           <div className="flex-1 overflow-auto rounded-md border p-6">
             {cartItems.length === 0 && (
               <div className="flex h-full w-full items-center justify-center">
-                <h1 className="text-xl font-medium text-gray-400">
-                  There is nothing in the cart :{'('}
-                </h1>
+                <h1 className="text-xl font-medium text-gray-400">Cart is empty</h1>
               </div>
             )}
             {cartItems &&

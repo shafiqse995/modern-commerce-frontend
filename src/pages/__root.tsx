@@ -3,7 +3,7 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 import Navbar from '~/components/Navbar';
 import { SidebarProvider } from '~/components/ui/sidebar';
-import { Toaster } from '~/components/ui/toaster';
+import { Toaster } from '~/components/ui/sonner';
 
 export const Route = createRootRoute({ component: RootRoute });
 

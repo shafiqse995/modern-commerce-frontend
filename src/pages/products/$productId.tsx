@@ -2,10 +2,10 @@ import { Minus, Plus, ShoppingCart } from 'lucide-react';
 
 import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import ProductLoadingSkeleton from '~/components/ProductLoadingSkeleton';
 import { Button } from '~/components/ui/button';
 import { fetchProduct } from '~/hooks/use-product';
-import { useToast } from '~/hooks/use-toast';
 import { cartStore } from '~/store/cart-store';
 
 export const Route = createFileRoute('/products/$productId')({
@@ -23,7 +23,6 @@ export default function ProductDetail() {
   const product = Route.useLoaderData();
   const [quantity, setQuantity] = useState(1);
   const { addProducts } = cartStore();
-  const { toast } = useToast();
 
   return (
     <div className="mx-auto flex w-full flex-col gap-10 py-8 xl:w-[60%]">
@@ -62,7 +61,7 @@ export default function ProductDetail() {
             className="mt-4 w-full"
             onClick={() => {
               addProducts(product, quantity);
-              toast({ title: `${product.title} Added`, variant: 'default' });
+              toast.info(`${product.title} Added`);
             }}
           >
             <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
