@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useQueryState } from 'nuqs';
 import { fetchAllProducts } from '~/hooks/use-products';
-import { Route } from '~/pages/products';
+import { Route } from '~/pages/(app)/_layout/products';
 import { Button } from '../ui/button';
 
 export function ProductsPagination() {

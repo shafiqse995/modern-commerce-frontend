@@ -2,12 +2,12 @@ import { useNavigate } from '@tanstack/react-router';
 import { ShoppingCart } from 'lucide-react';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
-import { cartStore } from '~/store/cart-store';
+import { useCart } from '~/store/cart-store';
 import { SearchBar } from './Search';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { totalProducts } = cartStore();
+  const { totalProducts } = useCart();
 
   return (
     <nav className="fixed z-10 w-full bg-white shadow-sm">

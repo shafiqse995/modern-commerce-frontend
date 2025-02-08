@@ -64,8 +64,8 @@ export function ProductFilters() {
                 className="my-4"
               />
               <div className="flex justify-between text-sm">
-                <span>${priceRange[0]}</span>
-                <span>${priceRange[1]}</span>
+                <span>€{priceRange[0]}</span>
+                <span>€{priceRange[1]}</span>
               </div>
             </div>
           </AccordionContent>
@@ -83,7 +83,7 @@ export function ProductFilters() {
                   />
                   <label
                     htmlFor={category.title}
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    className="text-sm font-medium capitalize leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                   >
                     {category.title}
                   </label>

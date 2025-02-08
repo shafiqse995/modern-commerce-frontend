@@ -1,6 +1,6 @@
 import { useQueryState } from 'nuqs';
 import { useProducts } from '~/hooks/use-products';
-import { Route } from '~/pages/products';
+import { Route } from '~/pages/(app)/_layout/products';
 import ProductsLoadingSkeleton from '../ProductsLoadingSkeleton';
 import { ProductCard } from './ProductCard';
 

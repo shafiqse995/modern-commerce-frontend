@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 import ProductLoadingSkeleton from '~/components/ProductLoadingSkeleton';
 import { Button } from '~/components/ui/button';
 import { fetchProduct } from '~/hooks/use-product';
-import { cartStore } from '~/store/cart-store';
+import { useCart } from '~/store/cart-store';
 
-export const Route = createFileRoute('/products/$productId')({
+export const Route = createFileRoute('/(app)/_layout/products/$productId')({
   component: ProductDetail,
   async loader(ctx) {
     return fetchProduct(Number(ctx.params.productId));
@@ -22,7 +22,7 @@ export const Route = createFileRoute('/products/$productId')({
 export default function ProductDetail() {
   const product = Route.useLoaderData();
   const [quantity, setQuantity] = useState(1);
-  const { addProducts } = cartStore();
+  const { addProducts } = useCart();
 
   return (
     <div className="mx-auto flex w-full flex-col gap-10 py-8 xl:w-[60%]">

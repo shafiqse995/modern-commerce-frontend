@@ -17,8 +17,9 @@ type Actions = {
   removeProducts: (product: Product) => void;
   increaseQuantity: (product: Product) => void;
   decreaseQuantity: (product: Product) => void;
+  resetCart: () => void;
 };
-export const cartStore = create<State & Actions>()(
+export const useCart = create<State & Actions>()(
   persist(
     (set) => ({
       products: [],
@@ -96,6 +97,7 @@ export const cartStore = create<State & Actions>()(
             };
           }
         }),
+      resetCart: () => set({ products: [], totalProducts: 0, totalPrice: 0 }),
     }),
     {
       name: 'cart-storage',
