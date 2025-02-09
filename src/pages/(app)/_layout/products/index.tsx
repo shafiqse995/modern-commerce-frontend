@@ -18,11 +18,11 @@ export function ProductsPage() {
       <div className="flex flex-col space-y-6">
         <div className="flex gap-6">
           <aside className="hidden w-[300px] flex-shrink-0 overflow-y-auto lg:block">
-            <Suspense fallback={<p>loading...</p>}>
+            <Suspense>
               <ProductFilters />
             </Suspense>
           </aside>
-          <div className="flex flex-col gap-10">
+          <div className="flex w-full flex-col gap-10">
             <h1 className="size-5 text-3xl font-medium">Products</h1>
             <Sheet>
               <SheetTrigger asChild>
@@ -32,12 +32,12 @@ export function ProductsPage() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-[300px] sm:w-[400px]">
-                <Suspense fallback={<p>Loading...</p>}>
+                <Suspense>
                   <ProductFilters />
                 </Suspense>
               </SheetContent>
             </Sheet>
-            <main className="bg flex-1">
+            <main className="flex-1">
               <ProductsPagination />
               <ProductGrid />
             </main>

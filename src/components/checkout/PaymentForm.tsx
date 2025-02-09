@@ -18,8 +18,6 @@ export function PaymentForm() {
     setLoading(true);
     const response = await elements.submit();
 
-    console.log(response);
-
     if (response.error) {
       toast.error(response.error.message);
       setLoading(false);

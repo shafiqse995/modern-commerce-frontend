@@ -5,7 +5,7 @@ export default function ProductsLoadingSkeleton() {
   const productsLoader = Array(10).fill(0);
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {productsLoader.map((_, idx) => (
         <Card key={idx} className="flex h-full flex-col">
           <CardHeader className="p-0">

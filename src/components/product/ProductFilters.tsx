@@ -10,15 +10,17 @@ import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
 import { Slider } from '~/components/ui/slider';
 import { useCategories } from '~/hooks/use-categories';
+import usePriceRange from '~/hooks/use-price-range';
 import { SearchBar } from '../Search';
 
 export function ProductFilters() {
   const { data: categories = [] } = useCategories();
+  const { data } = usePriceRange();
   const [priceRange, setPriceRange] = useState(() => {
     const searchParams = new URLSearchParams(window.location.search);
 
     const min = Number(searchParams.get('min_price') ?? 0);
-    const max = Number(searchParams.get('max_price') ?? 1000);
+    const max = Number(searchParams.get('max_price') ?? Number(data?.max_price) ?? 1000);
 
     const correctedMin = Number.isNaN(min) ? 0 : min;
     const correctedMax = Number.isNaN(max) ? 1000 : max;
@@ -56,8 +58,7 @@ export function ProductFilters() {
           <AccordionContent>
             <div className="px-2">
               <Slider
-                defaultValue={[0, 1000]}
-                max={1000}
+                max={Number(data?.max_price ?? 1000)}
                 step={1}
                 value={priceRange}
                 onValueChange={setPriceRange}
@@ -103,6 +104,19 @@ export function ProductFilters() {
         }}
       >
         Apply Filters
+      </Button>
+      <Button
+        className="mt-4 w-full"
+        variant="outline"
+        onClick={() => {
+          setPriceRange([0, data?.max_price]);
+          setMinPrice('');
+          setMaxPrice('');
+          setSelectedCategories('');
+          setLocalCategory([]);
+        }}
+      >
+        Reset Filters
       </Button>
     </div>
   );

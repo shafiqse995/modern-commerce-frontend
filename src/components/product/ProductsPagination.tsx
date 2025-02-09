@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useQueryState } from 'nuqs';
 import { fetchAllProducts } from '~/hooks/use-products';
+import { cn } from '~/lib/utils';
 import { Route } from '~/pages/(app)/_layout/products';
 import { Button } from '../ui/button';
 
@@ -22,8 +23,14 @@ export function ProductsPagination() {
     if (data && data.has_next) setPage(data.next);
   };
 
+  const paginationEnabled = !data?.has_next && !data?.has_previous;
+
   return (
-    <div className="flex flex-1 items-center justify-end gap-x-2 py-10">
+    <div
+      className={cn('flex flex-1 items-center justify-between gap-x-2 py-5', {
+        invisible: paginationEnabled,
+      })}
+    >
       <Button disabled={!data || !data.has_previous} onClick={getPreviousPage}>
         Previous
       </Button>

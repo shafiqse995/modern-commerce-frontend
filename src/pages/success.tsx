@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Navigate } from '@tanstack/react-router';
 import { Check, ShoppingBag } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Button } from '~/components/ui/button';
 import { useCart } from '~/store/cart-store';
 
@@ -9,11 +9,16 @@ export const Route = createFileRoute('/success')({
 });
 
 function Success() {
-  const { resetCart } = useCart();
+  const { resetCart, totalProducts } = useCart();
+  const totalProductsValue = useRef(totalProducts);
 
   useEffect(() => {
     resetCart();
   }, [resetCart]);
+
+  if (totalProductsValue.current === 0) {
+    return <Navigate to="/products" />;
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">

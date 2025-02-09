@@ -26,9 +26,9 @@ function CheckoutPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: 'John Doe',
-      email: 'john@example.com',
-      phone: '1234567890',
+      name: '',
+      email: '',
+      phone: '',
     },
   });
   const [clientSecret, setClientSecret] = useState<string>();

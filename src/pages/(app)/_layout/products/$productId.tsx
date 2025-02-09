@@ -50,7 +50,7 @@ export default function ProductDetail() {
             >
               <Minus className="h-4 w-4" />
             </Button>
-            <span className="text-xl font-semibold">{quantity}</span>
+            <span className="min-w-10 text-center text-xl font-semibold">{quantity}</span>
             <Button variant="outline" size="icon" onClick={() => setQuantity(quantity + 1)}>
               <Plus className="h-4 w-4" />
             </Button>
@@ -61,6 +61,7 @@ export default function ProductDetail() {
             className="mt-4 w-full"
             onClick={() => {
               addProducts(product, quantity);
+              setQuantity(1);
               toast.info(`${product.title} Added`);
             }}
           >

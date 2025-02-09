@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { Minus, Plus, X } from 'lucide-react';
+import { Minus, Plus, Trash2Icon, X } from 'lucide-react';
 
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '~/components/ui/card';
 import { Input } from '~/components/ui/input';
 import { Separator } from '~/components/ui/separator';
+import { cn } from '~/lib/utils';
 import { useCart } from '~/store/cart-store';
 
 export const Route = createFileRoute('/(app)/_layout/cart/')({
@@ -16,6 +17,7 @@ function CartPage() {
     products: cartItems,
     removeProducts,
     totalPrice,
+    resetCart,
     increaseQuantity,
     decreaseQuantity,
   } = useCart();
@@ -26,7 +28,22 @@ function CartPage() {
 
   return (
     <div className="flex max-h-[calc(100vh-3rem)] flex-col py-10">
-      <h1 className="mb-8 text-3xl font-bold">Your Cart</h1>
+      <div className="flex w-full justify-between">
+        <h1 className="mb-8 text-3xl font-bold">Your Cart</h1>
+        <Button
+          variant="outline"
+          className={cn(
+            'border-red-500 text-red-500 hover:border-red-400 hover:bg-red-200/35 hover:text-red-500',
+            {
+              invisible: cartItems.length === 0,
+            },
+          )}
+          onClick={resetCart}
+        >
+          <Trash2Icon />
+          Clear Cart
+        </Button>
+      </div>
       <div className="grid flex-1 gap-8 overflow-hidden lg:grid-cols-3">
         <div className="flex flex-col overflow-hidden lg:col-span-2">
           <div className="flex-1 overflow-auto rounded-md border p-6">
