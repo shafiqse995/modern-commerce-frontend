@@ -2,6 +2,7 @@ import { useNavigate, useRouter } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { Card, CardContent, CardFooter, CardHeader } from '~/components/ui/card';
 import { Product } from '~/hooks/use-products';
+import { Badge } from '../ui/badge';
 
 interface ProductCardProps {
   product: Product;
@@ -48,6 +49,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </CardContent>
       <CardFooter className="flex items-center justify-between p-4 pt-0">
         <span className="text-lg font-bold">€{product.price.toFixed(2)}</span>
+        <Badge variant="default">{product.category.title}</Badge>
       </CardFooter>
     </Card>
   );

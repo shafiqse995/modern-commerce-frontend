@@ -4,6 +4,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import ProductLoadingSkeleton from '~/components/ProductLoadingSkeleton';
+import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { fetchProduct } from '~/hooks/use-product';
 import { useCart } from '~/store/cart-store';
@@ -36,6 +37,7 @@ export default function ProductDetail() {
         {/* Product Information */}
         <div className="flex flex-col items-center gap-4 sm:items-start">
           <h1 className="text-3xl font-bold">{product?.title}</h1>
+          <Badge variant="default">{product?.category.title}</Badge>
           <div className="flex items-center gap-2">
             <span className="text-2xl font-semibold">€{product?.price.toFixed(2)}</span>
           </div>
@@ -71,7 +73,7 @@ export default function ProductDetail() {
       </div>
       <div className="flex w-full flex-col gap-y-3">
         <h1 className="text-2xl font-bold text-primary">Product Description</h1>
-        <p className="text-md">{product?.description}</p>
+        <p className="text-md text-balance text-justify">{product?.description}</p>
       </div>
     </div>
   );
