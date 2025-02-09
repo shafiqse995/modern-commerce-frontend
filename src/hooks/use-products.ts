@@ -18,7 +18,7 @@ export const Product = z.object({
   category: ProductCategory,
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
-  image: z.string().url().default('https://placehold.co/5000x5000'),
+  media: z.string().url().default('https://placehold.co/5000x5000'),
 });
 
 export type Product = z.infer<typeof Product>;

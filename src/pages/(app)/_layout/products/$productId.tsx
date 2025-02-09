@@ -29,7 +29,7 @@ export default function ProductDetail() {
     <div className="mx-auto flex w-full flex-col gap-10 py-8 xl:w-[60%]">
       <div className="mt-0 grid gap-8 sm:mt-5 md:grid-cols-2">
         <img
-          src={product.image}
+          src={product.media}
           alt={product.title}
           className="size-[350px] w-full rounded-lg md:h-[350px] md:w-[713px] lg:size-[470px] xl:size-[400px]"
         />

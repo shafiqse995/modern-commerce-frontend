@@ -37,7 +37,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardHeader className="p-0">
         <div className="relative aspect-square overflow-hidden rounded-t-lg">
           <img
-            src={product.image}
+            src={product.media}
             alt={product.title}
             className="h-full w-full object-cover transition-transform hover:scale-105"
           />

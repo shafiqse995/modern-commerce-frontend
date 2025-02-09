@@ -58,7 +58,7 @@ function CartPage() {
                   <CardContent className="p-4">
                     <div className="flex items-center space-x-4">
                       <img
-                        src={item.image || '/placeholder.svg'}
+                        src={item.media}
                         alt={item.title}
                         className="h-20 w-20 rounded-md object-cover"
                       />
