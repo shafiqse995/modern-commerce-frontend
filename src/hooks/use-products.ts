@@ -8,6 +8,15 @@ export const ProductCategory = z.object({
   title: z.string(),
 });
 
+export const ProductInventory = z
+  .object({
+    quantity: z.number(),
+    tracking: z.boolean(),
+  })
+  .nullable();
+
+export type ProductInventory = z.infer<typeof ProductInventory>;
+
 export type ProductCategory = z.infer<typeof ProductCategory>;
 
 export const Product = z.object({
@@ -16,6 +25,7 @@ export const Product = z.object({
   description: z.string(),
   price: z.coerce.number(),
   category: ProductCategory,
+  inventory: ProductInventory,
   created_at: z.string().datetime(),
   updated_at: z.string().datetime(),
   media: z.string().url().default('https://placehold.co/5000x5000'),

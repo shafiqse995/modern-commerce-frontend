@@ -23,7 +23,57 @@ export const Route = createFileRoute('/(app)/_layout/products/$productId')({
 export default function ProductDetail() {
   const product = Route.useLoaderData();
   const [quantity, setQuantity] = useState(1);
-  const { addProducts } = useCart();
+  const { addProducts, products } = useCart();
+
+  const getCartQuantity = () => {
+    const cartItem = products.find((item) => item.id === product.id);
+    return cartItem ? cartItem.quantity : 0;
+  };
+  const getMaxQuantity = () => {
+    if (product.inventory && product.inventory.tracking) {
+      const cartQuantity = getCartQuantity();
+      return Math.max(0, product.inventory.quantity - cartQuantity);
+    }
+    return Number.MAX_SAFE_INTEGER;
+  };
+
+  const handleIncrement = () => {
+    const maxQuantity = getMaxQuantity();
+    setQuantity((prev) => Math.min(prev + 1, maxQuantity));
+  };
+
+  const handleDecrement = () => {
+    setQuantity((prev) => Math.max(1, prev - 1));
+  };
+
+  const isIncrementDisabled = () => {
+    const maxQuantity = getMaxQuantity();
+    return quantity >= maxQuantity || maxQuantity === 0;
+  };
+
+  const isOutOfStock = () => {
+    return product.inventory && product.inventory.tracking && product.inventory.quantity <= 0;
+  };
+  const isAddToCartDisabled = () => {
+    // Disable if out of stock
+    if (isOutOfStock()) {
+      return true;
+    }
+
+    // Disable if trying to add more than available quantity
+    const maxQuantity = getMaxQuantity();
+    if (maxQuantity === 0) {
+      return true;
+    }
+
+    // Disable if selected quantity would exceed available quantity
+    const cartQuantity = getCartQuantity();
+    if (product.inventory && product.inventory.tracking) {
+      return cartQuantity + quantity > product.inventory.quantity;
+    }
+
+    return false;
+  };
 
   return (
     <div className="mx-auto flex w-full flex-col gap-10 py-8 xl:w-[60%]">
@@ -41,19 +91,31 @@ export default function ProductDetail() {
           <div className="flex items-center gap-2">
             <span className="text-2xl font-semibold">€{product?.price.toFixed(2)}</span>
           </div>
+          {!product.inventory ||
+          !product.inventory.tracking ||
+          (product.inventory.tracking && product.inventory.quantity > 0) ? (
+            <Badge className="bg-green-600 hover:bg-green-600/80">In Stock</Badge>
+          ) : (
+            <Badge variant="destructive">Out of Stock</Badge>
+          )}
 
           {/* Quantity Selection */}
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
               size="icon"
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
+              onClick={handleDecrement}
               disabled={quantity === 1}
             >
               <Minus className="h-4 w-4" />
             </Button>
             <span className="min-w-10 text-center text-xl font-semibold">{quantity}</span>
-            <Button variant="outline" size="icon" onClick={() => setQuantity(quantity + 1)}>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleIncrement}
+              disabled={isIncrementDisabled()}
+            >
               <Plus className="h-4 w-4" />
             </Button>
           </div>
@@ -61,6 +123,7 @@ export default function ProductDetail() {
           {/* Add to Cart Button */}
           <Button
             className="mt-4 w-full"
+            disabled={isAddToCartDisabled()}
             onClick={() => {
               addProducts(product, quantity);
               setQuantity(1);
