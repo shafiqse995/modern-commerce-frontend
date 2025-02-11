@@ -23,6 +23,6 @@ export default defineConfig(async ({ mode }) => {
   return {
     plugins: [react(), tsconfigPaths(), svgr(svgrOptions), TanStackRouterVite()],
     build: { outDir: 'build' },
-    server: { port: PORT },
+    server: typeof PORT === 'number' ? { port: PORT } : undefined,
   };
 });

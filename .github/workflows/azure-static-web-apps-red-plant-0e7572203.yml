@@ -32,13 +32,11 @@ jobs:
                const coredemo = require('@actions/core')
                return await coredemo.getIDToken()
            result-encoding: string
-      - name: Create Build Environment
-        run: |
-          touch .env
-          echo VITE_APP_TITLE=${{ secrets.APP_TITLE }} >> .env
-          echo VITE_API_URL="${{ secrets.API_URL }}" >> .env
-          echo VITE_STRIPE_PUB_KEY=${{ secrets.STRIPE_PUB_KEY }} >> .env
       - name: Build And Deploy
+        env:
+          VITE_APP_TITLE: ${{ secrets.APP_TITLE }}
+          VITE_API_URL: ${{ secrets.API_URL }}
+          VITE_STRIPE_PUB_KEY: ${{ secrets.STRIPE_PUB_KEY }}
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
