@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const env = z.object({
   // server
-  PORT: z.coerce.number(),
+  PORT: z.coerce.number().optional(),
 
   // client
   VITE_APP_TITLE: z.string().min(1),
