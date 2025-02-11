@@ -7,11 +7,17 @@ import { ZodError } from 'zod';
 import { env } from './src/env';
 
 export default defineConfig(async ({ mode }) => {
-  const loadedEnv = loadEnv(mode, __dirname, '');
-  const { PORT } = await env.parseAsync(loadedEnv).catch((error) => {
-    if (error instanceof ZodError) console.error(error.flatten().fieldErrors);
-    throw new Error('❌ Invalid environment variables:');
-  });
+  let PORT: number | undefined;
+
+  if (mode !== 'production') {
+    const loadedEnv = loadEnv(mode, __dirname, '');
+    const parsedEnv = await env.parseAsync(loadedEnv).catch((error) => {
+      if (error instanceof ZodError) console.error(error.flatten().fieldErrors);
+      throw new Error('❌ Invalid environment variables:');
+    });
+
+    PORT = parsedEnv.PORT;
+  }
 
   const svgrOptions: VitePluginSvgrOptions = {
     svgrOptions: {
