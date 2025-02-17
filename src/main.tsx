@@ -26,6 +26,8 @@ declare module '@tanstack/react-query' {
 
 document.title = import.meta.env.VITE_APP_TITLE;
 
+console.log(import.meta.env);
+
 const rootElement = document.getElementById('root');
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
@@ -33,7 +35,7 @@ if (rootElement) {
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-        <ReactQueryDevtools />
+        {import.meta.env.DEV && <ReactQueryDevtools />}
       </QueryClientProvider>
     </React.StrictMode>,
   );

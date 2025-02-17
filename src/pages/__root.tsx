@@ -12,7 +12,7 @@ function RootRoute() {
         <Outlet />
         <Toaster />
       </ErrorBoundary>
-      <TanStackRouterDevtools />
+      {import.meta.env.DEV ? <TanStackRouterDevtools /> : null}
     </>
   );
 }
