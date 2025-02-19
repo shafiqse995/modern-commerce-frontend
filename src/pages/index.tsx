@@ -11,11 +11,15 @@ export default function LandingPage() {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background">
-      <section className="relative flex h-[600px] items-center justify-center bg-gradient-to-r from-primary to-primary/80">
-        <div className="absolute inset-0 bg-background/10" />
+      <section className="relative flex h-[600px] items-center justify-center">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: "url('/hero-shopping.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 px-4 text-center">
-          <h1 className="mb-6 text-4xl font-bold text-background md:text-6xl">Modern Commerce</h1>
-          <p className="mx-auto mb-8 max-w-2xl text-xl text-background/90">
+          <h1 className="mb-6 text-4xl font-bold text-white md:text-6xl">Modern Commerce</h1>
+          <p className="mx-auto mb-8 max-w-2xl text-xl text-white/90">
             Shop the latest trends with confidence. Quality products, competitive prices, and
             exceptional service.
           </p>
