@@ -26,8 +26,6 @@ declare module '@tanstack/react-query' {
 
 document.title = import.meta.env.VITE_APP_TITLE;
 
-console.log(import.meta.env);
-
 const rootElement = document.getElementById('root');
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
